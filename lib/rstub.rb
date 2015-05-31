@@ -1,7 +1,7 @@
 class RStub
 
-  def start
-    puts 'hello, world!'
+  def start (args)
+    puts args
   end
 
 end

@@ -3,4 +3,5 @@
 require 'rstub'
 
 rstub = RStub.new
-rstub.start
+rstub.start(ARGV)
+
