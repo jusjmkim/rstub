@@ -1,11 +1,12 @@
 class RStub
-  attr_reader :parser
+  attr_reader :parser, :path_parser
 
   def initialize
     @parser = Parser.new
+    @path_parser = PathParser.new
   end
 
-  def start(raw_args)
+  def start(raw_args = '')
     args = raw_args.split(' ')
     check_args(args)
   end
@@ -22,15 +23,27 @@ class RStub
     args_hash
   end
 
-  def make_new_files(args_hash)
-    Dir.mkdir("./#{args_hash[:directory]}")
+  def make_new_directory(directory)
+    Dir.mkdir(directory)
+  end
+
+  def make_new_files(files)
+    files.each do |file|
+      File.new(file)
+    end
+  end
+
+  def make_new_directory_structure(args_hash)
+    make_new_directory(args_hash[:directory])
+    checked_files = path_parser.check_globs(args_hash[:files])
+    make_new_files(checked_files)
   end
 
   def check_args(args)
     if args.size < 2
       puts 'Not enough arguments'
     else
-      make_new_files(parse_arguments(args))
+      make_new_directory_structure(parse_arguments(args))
     end
   end
 
