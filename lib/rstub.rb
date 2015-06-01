@@ -1,8 +1,8 @@
 class RStub
-  attr_reader :parser, :path_parser
+  attr_reader :file_parser, :path_parser
 
   def initialize
-    @parser = Parser.new
+    @file_parser = FileParser.new
     @path_parser = PathParser.new
   end
 
@@ -35,7 +35,7 @@ class RStub
 
   def make_new_directory_structure(args_hash)
     make_new_directory(args_hash[:directory])
-    checked_files = path_parser.check_globs(args_hash[:files])
+    checked_files = path_parser.get_globs(args_hash[:files])
     make_new_files(checked_files)
   end
 
