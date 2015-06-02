@@ -2,7 +2,7 @@ require 'bundler'
 Bundler.setup
 
 require 'rstub'
-require 'rstub/file_parser'
-require 'rstub/path_parser'
+Dir[File.expand_path('../../lib/rstub/*.rb', __FILE__)].each { |f| require f }
+
 Bundler.require(:test)
 

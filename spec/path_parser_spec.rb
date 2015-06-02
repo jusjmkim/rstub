@@ -1,6 +1,7 @@
 describe PathParser do
   describe '#get_globs' do
-    before do
+    before(:all) do
+      Dir.chdir('spec/fixtures')
       @path_parser = PathParser.new
     end
 
@@ -9,12 +10,12 @@ describe PathParser do
     end
 
     it 'returns glob matches from current directory' do
-      expect(@path_parser.get_globs(['*'])).to eq(['baz.rb', 'foo.rb'])
+      expect(@path_parser.get_globs(['*'])).to eq(['baz.rb', 'foo.rb', 'foobar'])
     end
 
     it 'adds glob matches to the rest of the files' do
       expect(@path_parser.get_globs(['*', 'foo/bar.rb']))
-        .to eq(['baz.rb', 'foo.rb', 'foo/bar.rb'])
+        .to eq(['foo/bar.rb', 'baz.rb', 'foo.rb', 'foobar'])
     end
 
     it 'returns glob matches from lowel directory' do

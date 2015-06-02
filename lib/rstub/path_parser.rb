@@ -9,14 +9,18 @@ class PathParser
 
   def check_globs(files)
     has_glob = /\*/
-    globs = files.select do |file|
-      !(has_glob =~ file).nil?
+    globs = []
+    files.each do |file|
+      if has_glob =~ file
+        globs << file
+        files.delete(file)
+      end
     end
     find_matching_files(globs)
   end
 
   def find_matching_files(globs)
-    Dir.glob('*')
+    globs.map { |file| Dir.glob(file) }
   end
 
 end
