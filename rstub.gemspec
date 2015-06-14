@@ -8,11 +8,10 @@ Gem::Specification.new do |s|
   s.authors = 'Justin Kim'
   s.email = ['justinjmkim@gmail.com']
   s.executables = 'rstub'
-  s.homepage ='https://github.com/jusjmkim/rstub'
+  s.homepage = 'https://github.com/jusjmkim/rstub'
   s.license = 'MIT'
 
   s.add_development_dependency 'bundler', ['>= 1.9']
-  s.files = `git ls-files`.split($\)
+  s.files = `git ls-files`.split($ORS)
   s.test_files = s.files.grep(/^spec/)
 end
-

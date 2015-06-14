@@ -1,5 +1,4 @@
 class PathParser
-
   def get_globs(files)
     glob_files = check_globs(files)
     files.concat(glob_files).flatten.uniq
@@ -22,6 +21,4 @@ class PathParser
   def find_matching_files(globs)
     globs.map { |file| Dir.glob(file) }
   end
-
 end
-

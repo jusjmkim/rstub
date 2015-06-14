@@ -46,6 +46,4 @@ class RStub
       make_new_directory_structure(parse_arguments(args))
     end
   end
-
 end
-

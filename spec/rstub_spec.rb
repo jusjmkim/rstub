@@ -32,4 +32,3 @@ describe RStub do
     end
   end
 end
-
