@@ -7,10 +7,9 @@ class PathParser
   private
 
   def check_globs(files)
-    has_glob = /\*/
     globs = []
     files.each do |file|
-      if has_glob =~ file
+      if /\*/ =~ file
         globs << file
         files.delete(file)
       end
