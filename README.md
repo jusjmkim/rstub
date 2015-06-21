@@ -1,7 +1,7 @@
 # RStub
 
 [![Build Status](https://travis-ci.org/jusjmkim/rstub.svg?branch=master)](https://travis-ci.org/jusjmkim/rstub)
-[![Coverage Status](https://coveralls.io/repos/jusjmkim/rstub/badge.svg)](https://coveralls.io/r/jusjmkim/rstub)
+[![Coverage Status](https://coveralls.io/repos/jusjmkim/rstub/badge.svg?branch=master)](https://coveralls.io/r/jusjmkim/rstub?branch=master)
 
 ## Install
 Run `gem install rstub`
