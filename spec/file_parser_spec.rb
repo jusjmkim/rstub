@@ -18,7 +18,7 @@ describe FileParser do
     end
 
     def stub_all
-      RStub.new.start('* target')
+      RStub.new.start(['*', 'target'])
     end
 
     def expect_text(text)

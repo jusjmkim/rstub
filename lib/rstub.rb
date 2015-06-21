@@ -1,3 +1,6 @@
+require 'rstub/file_parser'
+require 'rstub/path_parser'
+
 class RStub
   attr_reader :file_parser, :path_parser
   attr_accessor :target, :files, :directories, :target_files
@@ -7,8 +10,7 @@ class RStub
     @path_parser = PathParser.new
   end
 
-  def start(raw_args = '')
-    args = raw_args.split(' ')
+  def start(args = [])
     raise 'Not enough arguments' if args.size < 2
     parse_args(args)
     make_new_directory_structure
