@@ -1,5 +1,6 @@
 class RStub
   attr_reader :file_parser, :path_parser
+  attr_accessor :target, :files, :directories, :target_files
 
   def initialize
     @file_parser = FileParser.new
@@ -8,7 +9,10 @@ class RStub
 
   def start(raw_args = '')
     args = raw_args.split(' ')
-    check_args(args)
+    raise 'Not enough arguments' if args.size < 2
+    parse_args(args)
+    make_new_directory_structure
+    parse_files
   end
 
   private
@@ -16,34 +20,41 @@ class RStub
   # returns a hash with a files key with a value of an array of the files to be
   # stubbed and a directory key with the name of the directory to be made as a
   # string
-  def parse_arguments(args)
-    args_hash = {}
-    args_hash[:directory] = args.pop
-    args_hash[:files] = args
-    args_hash
+  def parse_args(args)
+    self.target = args.pop
+    raise 'The last argument needs to be a directory' unless PathParser.directory?(target)
+    self.files = args
   end
 
-  def make_new_directory(directory)
-    Dir.mkdir(directory)
+  def make_target_directory
+    Dir.mkdir(target)
   end
 
-  def make_new_files(files)
-    files.each do |file|
-      File.new(file)
-    end
+  def make_new_directories
+    directories.each { |dir| Dir.mkdir("#{target}/#{dir}") unless dir == target }
   end
 
-  def make_new_directory_structure(args_hash)
-    make_new_directory(args_hash[:directory])
-    checked_files = path_parser.get_globs(args_hash[:files])
-    make_new_files(checked_files)
+  def make_new_files
+    target_files.each { |file| File.new(file, 'w') }
   end
 
-  def check_args(args)
-    if args.size < 2
-      puts 'Not enough arguments'
-    else
-      make_new_directory_structure(parse_arguments(args))
+  def parse_files_and_directories
+    parsed_path = path_parser.get_globs(files)
+    self.files = parsed_path[:files].select { |file| File.exist? file }
+    self.target_files = files.map { |file| "#{target}/#{file}"}
+    self.directories = parsed_path[:directories]
+  end
+
+  def make_new_directory_structure
+    make_target_directory
+    parse_files_and_directories
+    make_new_directories
+    make_new_files
+  end
+
+  def parse_files
+    target_files.each.with_index do |target_file, i|
+      file_parser.stub(target_file, files[i])
     end
   end
 end

@@ -1,23 +1,53 @@
 class PathParser
+  def self.directory?(directory)
+    !!/^\.?\w+$/.match(directory)
+  end
+
   def get_globs(files)
     glob_files = check_globs(files)
-    files.concat(glob_files).flatten.uniq
+    directories = get_directories(glob_files)
+    all_files = get_files_from_directory(glob_files, directories)
+    { directories: directories, files: all_files.flatten.uniq }
   end
 
   private
 
-  def check_globs(files)
-    globs = []
-    files.each do |file|
-      if /\*/ =~ file
-        globs << file
-        files.delete(file)
-      end
-    end
-    find_matching_files(globs)
+  def is_glob?(file)
+    !!/\*/.match(file)
   end
 
-  def find_matching_files(globs)
-    globs.map { |file| Dir.glob(file) }
+  def check_globs(files)
+    new_files = []
+    files.each { |file| new_files << (is_glob?(file) ? Dir.glob(file) : file) }
+    new_files.flatten
+  end
+
+  def in_directory?(file)
+    !!/\//.match(file)
+  end
+
+  def parse_files_in_directories(file)
+    file.split('/').slice(0...-1)
+  end
+
+  def parse_out_directories(files)
+    directories = []
+    files.each do |file|
+      directories <<  parse_files_in_directories(file) if in_directory?(file)
+    end
+    directories.flatten
+  end
+
+  def get_directories(files)
+    files.select { |file| PathParser.directory?(file) }
+         .concat(parse_out_directories(files))
+  end
+
+  def get_files_from_directory(files, directories)
+    directories.each do |dir|
+      files.delete(dir)
+      files << Dir.glob("#{dir}/*")
+    end
+    files
   end
 end

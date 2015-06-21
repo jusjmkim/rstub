@@ -6,3 +6,7 @@ group :test do
   gem 'coveralls', require: false
   gem 'rspec', '~> 3.2'
 end
+
+group :development do
+  gem 'pry'
+end
