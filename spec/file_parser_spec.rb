@@ -9,6 +9,7 @@ describe FileParser do
     end
 
     after(:all) do
+      File.new('foo.rb', 'w')
       Dir.chdir('../..')
     end
 
