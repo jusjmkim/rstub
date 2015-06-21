@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.homepage = 'https://github.com/jusjmkim/rstub'
   s.license = 'MIT'
 
-  s.add_development_dependency 'bundler', ['>= 1.10']
+  s.add_development_dependency 'bundler', ['>= 1.8']
   s.add_development_dependency 'rake', ['>= 10.4']
   s.files = `git ls-files`.split($ORS)
   s.test_files = s.files.grep(/^spec/)
