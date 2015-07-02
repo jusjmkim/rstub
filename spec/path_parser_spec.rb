@@ -25,26 +25,27 @@ describe PathParser do
     let(:path_parser) { PathParser.new }
 
     it 'returns the same array when there is no match' do
-      expect(path_parser.get_globs(['foo.rb'])[:files]).to match_array(['foo.rb'])
+      expect(path_parser.get_globs(['foo.rb'])[:files])
+        .to match_array(['foo.rb'])
     end
 
     it 'returns glob matches from current directory' do
       expect(path_parser.get_globs(['*']))
-        .to match_array({ directories: ['foobar'],
-                          files: ['baz.rb', 'foo.rb', 'foobar/foobaz.rb']})
+        .to match_array(directories: ['foobar'],
+                        files: %w(baz.rb foo.rb foobar/foobaz.rb))
     end
 
     it 'adds glob matches to the rest of the files' do
       expect(path_parser.get_globs(['*', 'foo/bar.rb'])[:directories])
-        .to match_array(['foo', 'foobar'])
+        .to match_array(%w(foo foobar))
       expect(path_parser.get_globs(['*', 'foo/bar.rb'])[:files])
-        .to match_array(['foo/bar.rb', 'baz.rb', 'foo.rb', 'foobar/foobaz.rb'])
+        .to match_array(%w(foo/bar.rb baz.rb foo.rb foobar/foobaz.rb))
     end
 
     it 'returns glob matches from lowel directory' do
       expect(path_parser.get_globs(['*/*']))
-        .to match_array({ directories: ['foobar'],
-                          files: ['foobar/foobaz.rb'] })
+        .to match_array(directories: ['foobar'],
+                        files: ['foobar/foobaz.rb'])
     end
   end
 end

@@ -1,6 +1,9 @@
 require 'rstub/file_parser'
 require 'rstub/path_parser'
 
+# RStub takes command line arguments, calls PathParser to parse them, creates
+# new files according to those arguments, and calls FileParser to parse those
+# files and write them to the newly generated files.
 class RStub
   attr_reader :file_parser, :path_parser
   attr_accessor :target, :files, :directories, :target_files
@@ -11,7 +14,7 @@ class RStub
   end
 
   def start(args = [])
-    raise ArgumentError 'Not enough arguments' if args.size < 2
+    fail ArgumentError, 'Not enough arguments' if args.size < 2
     parse_args(args)
     make_new_directory_structure
     parse_files
@@ -24,7 +27,9 @@ class RStub
   # string
   def parse_args(args)
     self.target = args.pop
-    raise ArgumentError 'The last argument needs to be a directory' unless PathParser.directory?(target)
+    unless PathParser.directory?(target)
+      fail ArgumentError, 'The last argument needs to be a directory'
+    end
     self.files = args
   end
 
@@ -33,7 +38,7 @@ class RStub
   end
 
   def make_new_directories
-    directories.each { |dir| Dir.mkdir("#{target}/#{dir}") unless dir == target }
+    directories.each { |d| Dir.mkdir("#{target}/#{d}") unless d == target }
   end
 
   def make_new_files
@@ -43,7 +48,7 @@ class RStub
   def parse_files_and_directories
     parsed_path = path_parser.get_globs(files)
     self.files = parsed_path[:files].select { |file| File.exist? file }
-    self.target_files = files.map { |file| "#{target}/#{file}"}
+    self.target_files = files.map { |file| "#{target}/#{file}" }
     self.directories = parsed_path[:directories]
   end
 

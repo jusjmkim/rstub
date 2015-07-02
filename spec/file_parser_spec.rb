@@ -14,7 +14,7 @@ describe FileParser do
     end
 
     def add_text(text)
-      File.open('foo.rb', 'w') { |f| f.puts text}
+      File.open('foo.rb', 'w') { |f| f.puts text }
     end
 
     def stub_all

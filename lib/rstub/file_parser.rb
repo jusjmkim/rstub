@@ -1,3 +1,5 @@
+# FileParser goes through a file and writes the contents of it to a target file,
+# but it ignores anything between the delimiters # STUB and # ENDSTUB.
 class FileParser
   def stub(target_file, file)
     File.open(file, 'r') do |readable_file|
@@ -10,12 +12,12 @@ class FileParser
   private
 
   def start_stubbing?(line, stubbing)
-    return true if !!/#\s*stub\s*/i.match(line)
+    return true if /#\s*stub\s*/i.match(line)
     stubbing
   end
 
   def end_stubbing?(line, stubbing)
-    return false if !!/#\s*endstub\s*/i.match(line)
+    return false if /#\s*endstub\s*/i.match(line)
     stubbing
   end
 
