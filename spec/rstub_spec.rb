@@ -21,16 +21,16 @@ describe RStub do
     end
 
     it 'raises error with invalid number of arguments' do
-      expect{rstub.start}.to raise_error('Not enough arguments')
-      expect{rstub.start(['foo'])}.to raise_error('Not enough arguments')
+      expect { rstub.start }.to raise_error('Not enough arguments')
+      expect { rstub.start(['foo']) }.to raise_error('Not enough arguments')
     end
 
     it 'raises error if the last argument isn\'t a directory' do
-      expect{rstub.start(['foo.rb', 'baz.rb'])}
+      expect { rstub.start(['foo.rb', 'baz.rb']) }
         .to raise_error('The last argument needs to be a directory')
-      expect{rstub.start(['target', 'foo.rb'])}
+      expect { rstub.start(['target', 'foo.rb']) }
         .to raise_error('The last argument needs to be a directory')
-      expect{rstub.start(['foo.rb', '*'])}
+      expect { rstub.start(['foo.rb', '*']) }
         .to raise_error('The last argument needs to be a directory')
     end
 
