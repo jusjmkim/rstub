@@ -2,7 +2,7 @@
 # arrays.
 class PathParser
   def self.directory?(directory)
-    !(/^\.?\w+$/ =~ directory).nil?
+    !/^\.?\w+$/.match(directory).nil?
   end
 
   def get_globs(files)
@@ -15,7 +15,7 @@ class PathParser
   private
 
   def glob?(file)
-    !(/\*/ =~ file).nil?
+    !/\*/.match(file).nil?
   end
 
   def check_globs(files)
@@ -25,7 +25,7 @@ class PathParser
   end
 
   def in_directory?(file)
-    !(%r{\/} =~ file).nil?
+    !%r{\/}.match(file).nil?
   end
 
   def extract_directories(file)
