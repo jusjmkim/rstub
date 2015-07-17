@@ -7,20 +7,6 @@ describe PathParser do
     Dir.chdir('../..')
   end
 
-  describe '::directory?' do
-    it 'no file extension is directory' do
-      expect(PathParser.directory?('bar')).to be true
-    end
-
-    it 'file extension is file' do
-      expect(PathParser.directory?('foo.rb')).to be false
-    end
-
-    it 'detects hidden directories' do
-      expect(PathParser.directory?('.bar')).to be true
-    end
-  end
-
   describe '#get_globs' do
     let(:path_parser) { PathParser.new }
 

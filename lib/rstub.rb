@@ -22,12 +22,16 @@ class RStub
 
   private
 
+  def directory?(directory)
+    !/^\.?\w+$/.match(directory).nil?
+  end
+
   # returns a hash with a files key with a value of an array of the files to be
   # stubbed and a directory key with the name of the directory to be made as a
   # string
   def parse_args(args)
     self.target = args.pop
-    unless PathParser.directory?(target)
+    unless directory?(target)
       fail ArgumentError, 'The last argument needs to be a directory'
     end
     self.files = args

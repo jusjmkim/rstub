@@ -1,10 +1,6 @@
 # PathParser parses directory and file paths into a hash with directory and file
 # arrays.
 class PathParser
-  def self.directory?(directory)
-    !/^\.?\w+$/.match(directory).nil?
-  end
-
   def get_globs(files)
     glob_files = check_globs(files)
     directories = get_directories(glob_files)
@@ -41,7 +37,7 @@ class PathParser
   end
 
   def get_directories(files)
-    files.select { |file| PathParser.directory?(file) }
+    files.select { |file| Dir.exist?(file) }
       .concat(parse_out_directories(files))
   end
 
