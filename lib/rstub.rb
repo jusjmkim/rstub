@@ -38,15 +38,18 @@ class RStub
   end
 
   def make_target_directory
-    Dir.mkdir(target)
+    Dir.mkdir(target) unless Dir.exist? target
   end
 
   def make_new_directories
-    directories.each { |d| Dir.mkdir("#{target}/#{d}") unless d == target }
+    directories.each do |d|
+      new_dir = "#{target}/#{d}"
+      Dir.mkdir(new_dir) unless Dir.exist?(new_dir)
+    end
   end
 
   def make_new_files
-    target_files.each { |file| File.new(file, 'w') }
+    target_files.each { |file| File.new(file, 'w') unless directory? file }
   end
 
   def parse_files_and_directories
