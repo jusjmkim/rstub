@@ -1,20 +1,7 @@
 describe FileParser do
   describe '#stub' do
-    before(:all) do
-      Dir.chdir('spec/fixtures')
-    end
-
-    after(:each) do
-      FileUtils.rm_r('target')
-    end
-
-    after(:all) do
-      File.new('foo.rb', 'w')
-      Dir.chdir('../..')
-    end
-
     def add_text(text)
-      File.open('foo.rb', 'w') { |f| f.puts text }
+      File.open('file1.rb', 'w') { |f| f.puts text }
     end
 
     def stub_all
@@ -22,7 +9,7 @@ describe FileParser do
     end
 
     def expect_text(text)
-      expect(IO.read('target/foo.rb')).to eql(text)
+      expect(IO.read('target/file1.rb')).to eql(text)
     end
 
     it 'can add text without stubs' do
