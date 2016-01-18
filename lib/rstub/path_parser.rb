@@ -37,14 +37,22 @@ class PathParser
   end
 
   def get_directories(files)
-    files.select { |file| Dir.exist? file }
-      .concat(parse_out_directories(files))
+    dirs = []
+    files.each do |file|
+      if Dir.exist? file
+        dirs << file
+        dirs.concat(get_directories(Dir.glob("#{file}/*")))
+      end
+    end
+    dirs
   end
 
   def get_files_from_directory(files, directories)
     directories.each do |dir|
       files.delete(dir)
-      files << Dir.glob("#{dir}/*")
+      Dir.glob("#{dir}/*").each do |file|
+        files << file unless File.directory? file
+      end
     end
     files
   end

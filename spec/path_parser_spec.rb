@@ -25,23 +25,13 @@ describe PathParser do
                            test_dir/nested_dir/nested_file2.rb))
     end
 
-    it 'adds glob matches to the rest of the files' do
-      paths = path_parser.get_globs(['*', 'file1/bar.rb'])
-      expect(paths[:directories])
-        .to match_array(%w(file1 test_dir test_dir/nested_dir))
-      expect(paths[:files])
-        .to match_array(%w(file1/bar.rb file2.rb file1.rb
-                           test_dir/nested_file.rb
-                           test_dir/nested_dir/nested_file2.rb))
-    end
-
     it 'returns glob matches from lowel directory' do
       paths = path_parser.get_globs(['*/*'])
       expect(paths[:directories])
-        .to match_array(%w(test_dir test_dir/nested_dir))
+        .to match_array(%w(test_dir/nested_dir))
       expect(paths[:files])
         .to match_array(%w(test_dir/nested_file.rb
-                           test_dir/nested_dir/nested_fil2.rb))
+                           test_dir/nested_dir/nested_file2.rb))
     end
   end
 end
