@@ -1,5 +1,14 @@
 describe PathParser do
   describe '#get_globs' do
+    before :all do
+      Dir.mkdir 'test_dir/nested_dir'
+      File.new 'test_dir/nested_dir/nested_file2.rb', 'w+'
+    end
+
+    after :all do
+      FileUtils.rm_r 'test_dir/nested_dir' if Dir.exist? 'test_dir/nested_dir'
+    end
+
     let(:path_parser) { PathParser.new }
 
     it 'returns the same array when there is no match' do
@@ -8,22 +17,31 @@ describe PathParser do
     end
 
     it 'returns glob matches from current directory' do
-      expect(path_parser.get_globs(['*']))
-        .to match_array(directories: ['test_dir'],
-                        files: %w(file1.rb file2.rb test_dir/nested_file.rb))
+      paths = path_parser.get_globs(['*'])
+      expect(paths[:directories])
+        .to match_array(%w(test_dir test_dir/nested_dir))
+      expect(paths[:files])
+        .to match_array(%w(file1.rb file2.rb test_dir/nested_file.rb
+                           test_dir/nested_dir/nested_file2.rb))
     end
 
     it 'adds glob matches to the rest of the files' do
-      expect(path_parser.get_globs(['*', 'file1/bar.rb'])[:directories])
-        .to match_array(%w(file1 test_dir))
-      expect(path_parser.get_globs(['*', 'file1/bar.rb'])[:files])
-        .to match_array(%w(file1/bar.rb file2.rb file1.rb test_dir/nested_file.rb))
+      paths = path_parser.get_globs(['*', 'file1/bar.rb'])
+      expect(paths[:directories])
+        .to match_array(%w(file1 test_dir test_dir/nested_dir))
+      expect(paths[:files])
+        .to match_array(%w(file1/bar.rb file2.rb file1.rb
+                           test_dir/nested_file.rb
+                           test_dir/nested_dir/nested_file2.rb))
     end
 
     it 'returns glob matches from lowel directory' do
-      expect(path_parser.get_globs(['*/*']))
-        .to match_array(directories: ['test_dir'],
-                        files: ['test_dir/nested_file.rb'])
+      paths = path_parser.get_globs(['*/*'])
+      expect(paths[:directories])
+        .to match_array(%w(test_dir test_dir/nested_dir))
+      expect(paths[:files])
+        .to match_array(%w(test_dir/nested_file.rb
+                           test_dir/nested_dir/nested_fil2.rb))
     end
   end
 end

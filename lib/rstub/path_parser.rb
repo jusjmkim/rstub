@@ -37,7 +37,7 @@ class PathParser
   end
 
   def get_directories(files)
-    files.select { |file| Dir.exist?(file) }
+    files.select { |file| Dir.exist? file }
       .concat(parse_out_directories(files))
   end
 
