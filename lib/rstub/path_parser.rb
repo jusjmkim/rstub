@@ -28,23 +28,17 @@ class PathParser
     file.split('/').slice(0...-1)
   end
 
-  def parse_out_directories(files)
-    directories = []
-    files.each do |file|
-      directories << extract_directories(file) if in_directory?(file)
-    end
-    directories.flatten
-  end
-
   def get_directories(files)
     dirs = []
     files.each do |file|
       if Dir.exist? file
         dirs << file
         dirs.concat(get_directories(Dir.glob("#{file}/*")))
+      elsif in_directory?(file)
+        dirs << extract_directories(file)
       end
     end
-    dirs
+    dirs.flatten.uniq
   end
 
   def get_files_from_directory(files, directories)
