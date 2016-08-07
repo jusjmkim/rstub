@@ -76,5 +76,21 @@ describe FileParser do
         expect_text('file1.rb', "hello\nfoo\n")
       end
     end
+
+    describe 'can stub html files' do
+      it 'can add text without stubs' do
+        text = "foo\nbar\n"
+        add_text('file1.html.erb', text)
+        stub_all
+        expect_text('file1.html.erb', "foo\nbar\n")
+      end
+
+      it 'doesn\'t include text between stub delimiters' do
+        text = "<!-- STUB -->\n hello <!-- ENDSTUB -->\n"
+        add_text('file1.html.erb', text)
+        stub_all
+        expect_text('file1.html.erb', '')
+      end
+    end
   end
 end

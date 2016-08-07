@@ -53,8 +53,8 @@ describe RStub do
       expect(Dir.exist?('target')).to be true
       expect(File.exist?('target/file1.rb')).to be true
       expect(File.exist?('target/file2.rb')).to be true
-      expect(Dir.exist?('target/test_dir')).to be true
-      expect(File.exist?('target/test_dir/nested_file.rb')).to be true
+      expect(Dir.exist?('target/dir1')).to be true
+      expect(File.exist?('target/dir1/nested_file1.rb')).to be true
     end
   end
 end

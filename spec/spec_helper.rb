@@ -11,10 +11,11 @@ Dir[File.expand_path('../../lib/rstub/*.rb', __FILE__)].each { |f| require f }
 RSpec.configure do |config|
   config.before :all do
     Dir.chdir('spec/fixtures')
-    Dir.mkdir 'test_dir' unless Dir.exist? 'test_dir'
+    Dir.glob('*').each { |f| FileUtils.rm_r f }
+    Dir.mkdir 'dir1' unless Dir.exist? 'dir1'
     File.new 'file1.rb', 'w+'
     File.new 'file2.rb', 'w+'
-    File.new 'test_dir/nested_file.rb', 'w+'
+    File.new 'dir1/nested_file1.rb', 'w+'
   end
 
   config.after :each do
@@ -22,7 +23,7 @@ RSpec.configure do |config|
   end
 
   config.after :all do
-    FileUtils.rm_r 'test_dir' if Dir.exist? 'test_dir'
+    FileUtils.rm_r 'dir1' if Dir.exist? 'dir1'
     FileUtils.rm_r 'file1.rb'
     FileUtils.rm_r 'file2.rb'
     Dir.chdir('../..')
