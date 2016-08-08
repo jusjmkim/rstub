@@ -1,7 +1,7 @@
 # FileParser goes through a file and writes the contents of it to a target file,
 # but it ignores anything between the delimiters # STUB and # ENDSTUB.
 class FileParser
-  attr_accessor :stub_regex, :end_stub_regex
+  attr_accessor :stub_regex, :end_stub_regex, :stubbing
 
   def stub(target_file, file)
     set_delimiters(file)
@@ -14,22 +14,20 @@ class FileParser
 
   private
 
-  def start_stubbing?(line, stubbing)
-    return true if stub_regex.match(line)
-    stubbing
+  def start_stubbing?(line)
+    self.stubbing = true if line.valid_encoding? && stub_regex.match(line.force_encoding('UTF-8'))
   end
 
-  def end_stubbing?(line, stubbing)
-    return false if end_stub_regex.match(line)
-    stubbing
+  def end_stubbing?(line)
+    self.stubbing = false if line.valid_encoding? && end_stub_regex.match(line.force_encoding('UTF-8'))
   end
 
   def write_text(target, readable_file)
-    stubbing = false
+    self.stubbing = false
     IO.foreach(readable_file) do |line|
-      stubbing = start_stubbing?(line, stubbing)
+      start_stubbing?(line)
       target.puts line unless stubbing
-      stubbing = end_stubbing?(line, stubbing)
+      end_stubbing?(line)
     end
   end
 

@@ -23,7 +23,7 @@ class RStub
   private
 
   def directory?(directory)
-    !/^\.?\w+$/.match(directory).nil?
+    directory != '*' && /\.\w+$/.match(directory).nil?
   end
 
   # returns a hash with a files key with a value of an array of the files to be
@@ -31,9 +31,7 @@ class RStub
   # string
   def parse_args(args)
     self.target = args.pop
-    unless directory?(target)
-      fail ArgumentError, 'The last argument needs to be a directory'
-    end
+    fail ArgumentError, 'The last argument needs to be a directory' unless directory?(target)
     self.files = args
   end
 

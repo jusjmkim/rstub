@@ -1,8 +1,8 @@
 Gem::Specification.new do |s|
   s.name = 'rstub'
-  s.version = '0.2.1'
+  s.version = '0.3.0'
 
-  s.date = '2015-05-30'
+  s.date = '2016-08-07'
   s.summary = 'A gem to stub out code'
   s.description = 'A gem to stub out pieces of code'
   s.authors = 'Justin Kim'

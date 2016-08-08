@@ -1,5 +1,4 @@
-# PathParser parses directory and file paths into a hash with directory and file
-# arrays.
+# PathParser parses directory and file paths into a hash with directory and file arrays.
 class PathParser
   def get_globs(files)
     glob_files = check_globs(files)
@@ -24,18 +23,12 @@ class PathParser
     !%r{\/}.match(file).nil?
   end
 
-  def extract_directories(file)
-    file.split('/').slice(0...-1)
-  end
-
   def get_directories(files)
     dirs = []
     files.each do |file|
       if Dir.exist? file
         dirs << file
         dirs.concat(get_directories(Dir.glob("#{file}/*")))
-      elsif in_directory?(file)
-        dirs << extract_directories(file)
       end
     end
     dirs.flatten.uniq
