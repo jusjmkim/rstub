@@ -14,7 +14,7 @@ class RStub
   end
 
   def start(args = [])
-    fail ArgumentError, 'Not enough arguments' if args.size < 2
+    raise ArgumentError, 'Not enough arguments' if args.size < 2
     parse_args(args)
     make_new_directory_structure
     parse_files
@@ -31,7 +31,9 @@ class RStub
   # string
   def parse_args(args)
     self.target = args.pop
-    fail ArgumentError, 'The last argument needs to be a directory' unless directory?(target)
+    unless directory?(target)
+      raise ArgumentError, 'The last argument needs to be a directory'
+    end
     self.files = args
   end
 

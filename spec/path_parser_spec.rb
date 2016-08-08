@@ -23,7 +23,7 @@ describe PathParser do
           .to match_array(%w(dir1 dir1/nested_dir))
         expect(paths[:files])
           .to match_array(%w(file1.rb file2.rb dir1/nested_file1.rb
-                           dir1/nested_dir/nested_file2.rb))
+                             dir1/nested_dir/nested_file2.rb))
       end
     end
 

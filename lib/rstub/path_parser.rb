@@ -1,4 +1,5 @@
-# PathParser parses directory and file paths into a hash with directory and file arrays.
+# PathParser parses directory and file paths into a hash with directory
+# and file arrays.
 class PathParser
   def get_globs(files)
     glob_files = check_globs(files)

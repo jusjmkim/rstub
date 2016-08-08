@@ -4,7 +4,7 @@ class FileParser
   attr_accessor :stub_regex, :end_stub_regex, :stubbing
 
   def stub(target_file, file)
-    set_delimiters(file)
+    determine_delimiters(file)
     File.open(file, 'r') do |readable_file|
       File.open(target_file, 'w') do |target|
         write_text(target, readable_file)
@@ -15,11 +15,11 @@ class FileParser
   private
 
   def start_stubbing?(line)
-    self.stubbing = true if line.valid_encoding? && stub_regex.match(line.force_encoding('UTF-8'))
+    self.stubbing = true if line.valid_encoding? && stub_regex.match(line)
   end
 
   def end_stubbing?(line)
-    self.stubbing = false if line.valid_encoding? && end_stub_regex.match(line.force_encoding('UTF-8'))
+    self.stubbing = false if line.valid_encoding? && end_stub_regex.match(line)
   end
 
   def write_text(target, readable_file)
@@ -31,13 +31,16 @@ class FileParser
     end
   end
 
-  def set_delimiters(file)
-    self.stub_regex, self.end_stub_regex = if /\w+\.rb/i.match(file)
-                                             [/#\s*stub\s*/i, /#\s*endstub\s*/i]
-                                           elsif /\w+\.html/i.match(file)
-                                             [/<!--\s+STUB\s+-->/i, /<!--\s+ENDSTUB\s+-->/i]
+  def determine_delimiters(file)
+    self.stub_regex, self.end_stub_regex = if /\w+\.rb/i =~ file
+                                             [/#\s*stub\s*/i,
+                                              /#\s*endstub\s*/i]
+                                           elsif /\w+\.html/i =~ file
+                                             [/<!--\s+STUB\s+-->/i,
+                                              /<!--\s+ENDSTUB\s+-->/i]
                                            else
-                                             # will never be matched by anything, thereby preserving all text
+                                             # will never be matched by anything
+                                             # thereby preserving all text
                                              [/$a/i, /$a/i]
                                            end
   end
