@@ -32,16 +32,13 @@ class FileParser
   end
 
   def determine_delimiters(file)
-    self.stub_regex, self.end_stub_regex = if /\w+\.rb/i =~ file
-                                             [/#\s*stub\s*/i,
-                                              /#\s*endstub\s*/i]
-                                           elsif /\w+\.html/i =~ file
+    self.stub_regex, self.end_stub_regex = if /\w+\.html/i =~ file
                                              [/<!--\s+STUB\s+-->/i,
                                               /<!--\s+ENDSTUB\s+-->/i]
                                            else
-                                             # will never be matched by anything
-                                             # thereby preserving all text
-                                             [/$a/i, /$a/i]
+                                             # defaults to Ruby delimiters
+                                             [/#\s*stub\s*/i,
+                                              /#\s*endstub\s*/i]
                                            end
   end
 end

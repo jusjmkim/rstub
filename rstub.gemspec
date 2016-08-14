@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'rstub'
-  s.version = '0.3.0'
+  s.version = '0.3.2'
 
   s.date = '2016-08-07'
   s.summary = 'A gem to stub out code'
